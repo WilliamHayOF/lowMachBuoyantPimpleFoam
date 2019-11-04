@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
 
     while (runTime.run())
     {
-        #include "readTimeControlsNew.H" //updated for new CFL
+        #include "readTimeControls.H"
         #include "compressibleCourantNo.H"
 
         #include "setDeltaT.H"
