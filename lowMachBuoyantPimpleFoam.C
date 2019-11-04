@@ -52,8 +52,6 @@ int main(int argc, char *argv[])
     #include "createMesh.H"
     #include "createControl.H"
     #include "createFields.H"
-    #include "readRayleighBenardNusselt.H" 
-    #include "readBudgetVariables.H"
     #include "initContinuityErrs.H"
     #include "createTimeControls.H"
     #include "compressibleCourantNo.H"
@@ -93,11 +91,6 @@ int main(int argc, char *argv[])
                 turbulence->correct();
             }
         }
-
-        #include "calculateRayleighBenardNusselt.H"
-        #include "calculateBudgetVariables.H"
-        
-        // Cont err check must come after calculation of budget variables which require thermo.rho()
         
         #include "rhoEqn.H"
         #include "compressibleContinuityErrs.H"
