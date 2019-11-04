@@ -19,9 +19,7 @@ volScalarField rho
     ),
     thermo.rho()
 );
-rho.oldTime(); // need to store rho for ddt term ? like in multiphase ? 
-
-dimensionedScalar totalMass0 = fvc::domainIntegrate(rho); // total mass based on thermo.rho AT t0
+rho.oldTime(); //need to store rho for ddt term
 
 volScalarField psi
 (
@@ -37,7 +35,21 @@ psi.oldTime(); // need to store for ddt term regardless of if we use ddt(rho) or
 
 volScalarField& p = thermo.p();
 
-p = totalMass0/fvc::domainIntegrate(psi);
+Info<< "\nReading pRef" << endl;
+uniformDimensionedScalarField pRef
+(
+    IOobject
+    (
+        "pRef",
+        runTime.constant(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::NO_WRITE
+    ),
+    dimensionedScalar(dimPressure, Zero)
+);
+
+p = pRef; // for the case of water the dpdt is very small
 p.correctBoundaryConditions();
 
 Info<< "Reading field U\n" << endl;
@@ -102,5 +114,3 @@ volScalarField dpdt //dummy dpdt kept to keep ternary operator happy (EEqn.H)
 mesh.setFluxRequired(pd.name());
 
 #include "createFvOptions.H"
-
-
